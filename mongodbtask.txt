@@ -1,0 +1,126 @@
+// db.startup_log.find({})
+//   .projection({})
+//   .sort({_id:-1})
+//   .limit(100)
+
+use mongodbtask;
+db.createCollection('students');
+
+db.students.insert([
+    {name:"akash" ,age:23 ,dept:"cse"},
+    {name:"shiva" ,age:24 ,dept:"cse"},
+    {name:"vishnu" ,age:24 ,dept:"ece"},
+    {name:"ganash" ,age:23 ,dept:"eee"},
+    {name:"velu" ,age:23 ,dept:"eee"},
+    
+    ]);
+    
+    // aggregate function
+    
+    
+    db.students.aggregate([
+        {
+            $group: {
+                _id: "$age",
+                noOfRecords : {"$sum" : 1}
+            }
+        }
+    ])
+    
+    
+    db.students.aggregate([
+        {
+            $group: {
+                _id: "$dept",
+                totalage : {"$sum" : "$age"}
+            }
+        }
+    ])
+    
+    //max
+    
+    db.students.aggregate([
+        {
+            $group: {
+                _id: "$dept",
+                maxage : {"$max" : "$age"}
+            }
+        }
+    ])
+    
+    //min
+    
+        db.students.aggregate([
+        {
+            $group: {
+                _id: "$dept",
+                minage : {"$min" : "$age"}
+            }
+        }
+    ])
+    
+    //
+    
+            db.students.aggregate([
+        {
+            $group: {
+                _id: "$dept",
+                avgage : {"$avg" : "$age"}
+            }
+        }
+    ])
+    
+
+db.students.aggregate([
+        {
+            $group: {
+                _id: "$age",
+                avgage : {"$avg" : "$age"}
+            }
+        },
+        {
+            $match : {
+                _id : 23
+            }
+        }
+    ])
+    
+    
+    db.students.aggregate([
+        {
+            $project: {
+                _id: 0,
+                name : 1,
+                age: 1,
+                
+            }
+        }
+    ])
+    
+db.students.aggregate([
+        {
+            $limit : 3
+        },
+        {
+            $skip : 1
+        }
+    ])
+
+db.students.aggregate([
+        {
+            $limit : 4
+        },
+        {
+            $skip : 1
+        }, 
+        {
+            $sort: {
+                age: -1
+            }
+        }
+    ])
+
+
+
+    
+    
